@@ -89,7 +89,7 @@ class FoodGroup extends CI_Controller
 
     //ฟังก์ชันแสดงข้อมูลรายการทั้งหมด
         public function getMenuAll() {
-        $menuAll =   $this->db->select('m.name, m.price, m.status, m.total, m.pic_url, c.cg_name, f.fg_name')
+        $menuAll =   $this->db->select('m.name, m.price, m.status, m.total, m.pic_url, c.cg_name, f.fg_name, m.barcode')
                  ->from('menu m')
                  ->join('catagory c', 'm.cg_id = c.cg_id')
                  ->join('food_group f', 'c.fg_id = f.fg_id')
@@ -104,6 +104,30 @@ class FoodGroup extends CI_Controller
             echo json_encode($menuData); // แปลงข้อมูลเป็น JSON และส่งออก
         } else {
             echo json_encode(0); // ส่งค่า 0 ในกรณีที่ไม่มีข้อมูล
+        }
+    }
+    public function getMenuSearch() {
+        $searchTerm = $this->input->post('search');
+
+        if (empty($searchTerm)) {
+            
+            return; // จบการทำงานของฟังก์ชันหาก searchTerm ว่าง
+        }
+        
+        $menuAllQuery = $this->db->select('m.name, m.price, m.status, m.total, m.pic_url, c.cg_name, f.fg_name, m.barcode')
+            ->from('menu m')
+            ->join('catagory c', 'm.cg_id = c.cg_id')
+            ->join('food_group f', 'c.fg_id = f.fg_id')
+            ->join('store s', 's.id_res_auto = f.id_res_auto')
+            ->where('s.id_res_auto', 1)
+            ->like('m.barcode', $searchTerm)
+            ->get();
+        
+        if ($menuAllQuery->num_rows() > 0) {
+            $menuData = $menuAllQuery->result(); 
+            echo json_encode($menuData); 
+        } else {
+            echo json_encode(0);
         }
     }
     
