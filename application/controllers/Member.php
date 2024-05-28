@@ -54,19 +54,19 @@ class Member extends CI_Controller
             }
         }
     }
-    public function getMembersBySearch($searchTerm) {
-        $this->db->select('id, member_name, member_phone, member_type, member_points');
-        $this->db->from('member');
-        $this->db->like('member_name', $searchTerm);
-        $this->db->or_like('member_phone', $searchTerm);
-        $this->db->or_like('member_type', $searchTerm);
+    public function getMembersBySearch() { 
+   
+        $query =   $this->db->select('m.member_id,m.member_name,m.member_phone,m.member_date,m.member_type,m.member_points')
+            ->from('member m')
+            // ->where('rm.id_res_auto', 1)
+            ->order_by('m.member_id', 'asc');
 
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
-            return $query->result_array();
+            echo json_encode($query->result());
         } else {
-            return false;
+            echo'aaaa';
         }
     }
 }
