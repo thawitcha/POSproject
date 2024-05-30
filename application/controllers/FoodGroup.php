@@ -19,9 +19,12 @@ class FoodGroup extends CI_Controller
 
         $fg_name= $data['fg_name']; 
         $id_res_auto= $data['id_res_auto']; 
+        $fg_img = $data['fg_img'];
+        
         $insert = array(
             'fg_name' => $fg_name,
             'id_res_auto' =>$id_res_auto,
+            'fg_img' => $fg_img,
         );
         $this->db->insert('food_group', $insert);
         echo 1;
@@ -69,6 +72,7 @@ class FoodGroup extends CI_Controller
                 $is_buffet=$item['is_buffet'];
                 $total=$item['total'];
                 $pic_url=$item['pic_url'];
+                $menu_code=$item['menu_code'];
                 
                 $insert = array(
                     'name' => $name,
@@ -79,6 +83,7 @@ class FoodGroup extends CI_Controller
                     'is_buffet' =>$is_buffet,
                     'total' =>$total,
                     'pic_url' =>$pic_url,
+                    'menu_code' => $menu_code,
                 );
                 $this->db->insert('menu', $insert);
             }
@@ -130,6 +135,5 @@ class FoodGroup extends CI_Controller
             echo json_encode(0);
         }
     }
-    
-   
+
 }

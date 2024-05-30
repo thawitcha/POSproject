@@ -96,6 +96,59 @@ class Bill extends CI_Controller
         echo json_encode($rm_array);
         return $rm_array;
     }
+     
+    // public function disCount() {
     
-    
+    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            
+    //         $json = file_get_contents('php://input');
+    //         $data = json_decode($json, true);
+            
+    //             echo json_encode($data);
+    //     } else {
+    //         echo "Invalid request method";
+    //         return 1;
+    //     }
+    // }
+    public function insertDisCount(){
+        $json = file_get_contents('php://input');
+        $data = json_decode($json,true);
+        if($data === null ){
+            echo "Error decoding JSON";
+            return;
+        } else {
+            
+            foreach ($data as $item) {
+            $discount_name = $item['discount_name'];
+            $discount_count= $item['discount_count'];      
+            $discount_point = $item['discount_point'];
+            $id_res_auto = $item['id_res_auto'];
+
+            $insert = array(
+                
+                'discount_name' => $discount_name,
+                'discount_count' => $discount_count,
+                'discount_point' => $discount_point,
+                'id_res_auto' => $id_res_auto,
+            );
+            $this->db->insert('discount',$insert);   
+        }
+            echo 1;
+    }
+    }
+    public function getDiscount() { 
+   
+        $query =   $this->db->select('d.discount_name,d.discount_count,d.discount_point')
+            ->from('discount d')
+            // ->where('rm.id_res_auto', 1)
+            ->order_by('d.discount_id', 'asc');
+
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            echo json_encode($query->result());
+        } else {
+            echo'error';
+        }
+    }
 }

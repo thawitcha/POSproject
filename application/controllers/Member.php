@@ -18,14 +18,15 @@ class Member extends CI_Controller
             $member_name = $data['member_name'];
             $member_phone = $data['member_phone'];
             $member_type = $data['member_type'];
-            $member_points = $data['member_points'];
-
+            // $member_points = $data['member_points'];
+            $member_date = $data['member_date'];
             $insert = array(
                 
                 'member_name' => $member_name,
                 'member_phone' => $member_phone,
                 'member_type' => $member_type,
-                'member_points' => $member_points,
+                // 'member_points' => $member_points,
+                'member_date' => $member_date,
             );
             $this->db->insert('member',$insert);
             echo 1;
@@ -69,4 +70,5 @@ class Member extends CI_Controller
             echo'aaaa';
         }
     }
+
 }

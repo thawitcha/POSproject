@@ -16,7 +16,7 @@ class menu extends CI_Controller
     foreach ($query->result() as $row) {
         // เพิ่มข้อมูลจากฐานข้อมูลลงใน array
         $menu_array[] = array(
-            'f_id' => $row->f_id,
+            'm_id' => $row->m_id,
             'name' => $row->name,
             'price'=> $row->price,
             'pic_url'=> $row->pic_url,
@@ -60,7 +60,7 @@ public function insertData(){
             echo "Error decoding JSON";
             return;
         }else{
-            $f_id= $data['f_id'];
+            $m_id= $data['m_id'];
             $name= $data['name']; 
             $price= $data['price']; 
             $pic_url= $data['pic_url']; 
@@ -70,7 +70,7 @@ public function insertData(){
             'price' => $price,
             'pic_url' => $pic_url,
         );
-        $this->db->where('f_id', $f_id);
+        $this->db->where('m_id', $m_id);
         $this->db->update('menu', $update_data);
         
           echo 1;
@@ -84,21 +84,13 @@ public function insertData(){
             echo json_encode(array("error" => "Error decoding JSON"));
             return;
         } else {
-            $f_id = $data['f_id']; // รับค่า f_id ที่ต้องการลบ
-    
-            // กำหนดเงื่อนไขสำหรับการลบ (โดยใช้ f_id เพื่อหาข้อมูลที่ต้องการลบ)
-            $this->db->where('f_id', $f_id);
-            
-            // ทำการลบข้อมูลในฐานข้อมูล
-            $this->db->delete('menu');
-    
-            // ตรวจสอบว่ามีการลบข้อมูลหรือไม่
-            if ($this->db->affected_rows() > 0) {
-                // ส่งข้อมูลกลับเป็น JSON บอกว่าลบสำเร็จ
-                echo json_encode(array("success" => true));
+            $m_id = $data['m_id'];                                         // รับค่า f_id ที่ต้องการลบ
+            $this->db->where('m_id', $m_id);                               // กำหนดเงื่อนไขสำหรับการลบ (โดยใช้ f_id เพื่อหาข้อมูลที่ต้องการลบ)
+            $this->db->delete('menu');                                     // ทำการลบข้อมูลในฐานข้อมูล
+            if ($this->db->affected_rows() > 0) {                          // ตรวจสอบว่ามีการลบข้อมูลหรือไม่
+                echo json_encode(array("success" => true));                // ส่งข้อมูลกลับเป็น JSON บอกว่าลบสำเร็จ
             } else {
-                // ส่งข้อมูลกลับเป็น JSON บอกว่าไม่พบข้อมูลที่ต้องการลบ
-                echo json_encode(array("error" => "Data not found"));
+                echo json_encode(array("error" => "Data not found"));      // ส่งข้อมูลกลับเป็น JSON บอกว่าไม่พบข้อมูลที่ต้องการลบ
             }
         }
     }
